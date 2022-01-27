@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %} Make New Reservation {% endblock %}</h1>
+<div class="container">
+  <div class="row justify-content-center">
+<form id="form" method="post" action="add">
+    <select name="name">
+        <option value="{{students[0].name}}" selected>{{students[0].name}}</option>
+        {% for student in students[1:] %}
+          <option value="{{student.name}}">{{student.name}}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <br>
+      <label for="date">Date: </label><br>
+      <input type="date" value="2022-01-01" name="date" id="date"><br><br>
+      <select id="select_items" name="select_items">
+        <option value="{{items[0].name}}" selected>{{items[0].name}}</option>
+        {% for item in items[1:] %}
+          <option value="{{item.name}}">{{item.name}}</option>
+        {% endfor %}
+      </select><br>
+    <div style="width:0;overflow: hidden;"><input type="text" id="ids" name=ids></div>
+    <div id="items"></div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+</div>
+{% endblock %}

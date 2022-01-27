@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ item.name }}</h1>
+    <h2>{{ item.type }}</h2>
+    <p>{{ item.status }}</p>
+    <p>{{ item.status_date }}</p>
+    {% if item.student %}
+        <h2>Checked Out By: {{item.student.name}}</h2>
+    {%endif%}
+{% endblock %}

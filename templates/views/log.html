@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">Log</h1>
+
+{% for log in logs %}
+<div class="card">    
+    <h1>{{ log.student.name }}</h1>
+    <h2>{{ log.item.name }}</h2>
+    <p>Date Out: {{ log.date_out }}</p>
+    <p>Date In: {{ log.date_in }}</p>
+</div>
+<br>
+{% endfor %} 
+{% endblock %}

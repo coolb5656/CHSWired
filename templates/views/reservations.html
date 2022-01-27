@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">Reservations</h1>
+
+{% for res in reservations %}
+<div class="card">    
+    <h1>{{ res.student.name }}</h1>
+    <h2>{{ res.item.name }}</h2>
+    <p>Date Out: {{ res.date_out.date() }}</p>
+</div>
+<br>
+{% endfor %} 
+{% endblock %}
