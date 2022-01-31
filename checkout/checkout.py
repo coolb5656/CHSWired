@@ -1,8 +1,10 @@
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from . import db
-from .models import item, student
+import app
+import models
 from flask import jsonify
+db = app.db
+
 
 checkout = Blueprint('checkout', __name__)
 
@@ -13,10 +15,10 @@ def checkout_item():
         ids = request.form.get("ids")
         ids = ids.split(",")
 
-        s = student.query.filter_by(name=name).first()
+        s = models.student.query.filter_by(name=name).first()
 
         for id in ids:
-            i = item.query.filter_by(id=id).first()                
+            i = models.item.query.filter_by(id=id).first()                
             i.status="Out"
             i.status_date = datetime.now()
             i.student_id = s.id
@@ -24,7 +26,7 @@ def checkout_item():
 
         return redirect(url_for("index"))
 
-    names = student.query.all()
+    names = models.student.query.all()
     return render_template("checkout/checkout.html", names=names)
 
 @checkout.route("checkin", methods=["GET", "POST"]) # checkin items
@@ -34,7 +36,7 @@ def checkin_item():
         ids = ids.split(",")
 
         for id in ids:
-            i = item.query.filter_by(id=id).first()                
+            i = models.item.query.filter_by(id=id).first()                
             i.status="In"
             i.status_date = datetime.now()
             i.student_id = None
@@ -42,14 +44,14 @@ def checkin_item():
 
         return redirect(url_for("index"))
 
-    names = student.query.all()
+    names = models.student.query.all()
     return render_template("checkout/checkin.html", names=names)
 
 @checkout.route("scan", methods=["GET"]) # backend for returning item names
 def scan():
     code = request.args.get("code", type=str)
     if code:
-        i = item.query.filter_by(code=code).first()
+        i = models.item.query.filter_by(code=code).first()
         if i is None:
             return jsonify(id=0, status="Non Existent", name="ERROR")
 
@@ -59,7 +61,7 @@ def scan():
 def scan_name():
     name = request.args.get("name", type=str)
     if name:
-        i = item.query.filter_by(name=name).first()
+        i = models.item.query.filter_by(name=name).first()
         if i is None:
             return jsonify(id=0, status="Non Existent", name="ERROR")
 

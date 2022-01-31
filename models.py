@@ -1,5 +1,7 @@
-from . import db
+import app
 from flask_login import UserMixin
+
+db = app.db
 
 """
 RELATIONSHIPS
