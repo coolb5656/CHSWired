@@ -20,7 +20,7 @@ def login():
             return redirect(url_for("auth.login"))
         
         login_user(s)
-        return redirect(url_for('main.profile'))
+        return redirect(url_for('admin.profile'))
 
     return render_template('auth/login.html', error=error)
 
@@ -39,7 +39,7 @@ def signup():
             return redirect(url_for('auth.signup'))
 
         # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-        new_user = student(email=email, name=name, pos="Student",pwd=generate_password_hash(password, method='sha256'))
+        new_user = student(email=email, name=name, pos="Producer",pwd=generate_password_hash(password, method='sha256'))
 
         # add the new user to the database
         db.session.add(new_user)

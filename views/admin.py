@@ -8,5 +8,5 @@ admin = Blueprint('admin', __name__)
 @login_required
 def profile():
     if(current_user.pos == "Producer"):
-        return render_template("admin/profile.html", name=current_user.name)
+        return render_template("admin/profile.html", student=current_user)
     return redirect(url_for('main.view_student', id=current_user.id))
