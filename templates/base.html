@@ -29,10 +29,15 @@
     <nav class="navbar navbar-light bg-light">
         <a href="{{url_for('index')}}" class="navbar-brand">CHS Wired</a>
         <ul class="nav mr-auto">
-            <li class="nav-item"><a href="{{url_for('index')}}" class="nav-link">Index</a></li>
+            <li class="nav-item"><a href="{{url_for('main.view_items')}}" class="nav-link">Items</a></li>
+            <li class="nav-item"><a href="{{url_for('main.view_reservations')}}" class="nav-link">Reservations</a></li>
+            <li class="nav-item"><a href="{{url_for('main.view_students')}}" class="nav-link">Students</a></li>
+            <li class="nav-item"><a href="{{url_for('checkout.checkin_item')}}" class="nav-link">Check In</a></li>
+            <li class="nav-item"><a href="{{url_for('checkout.checkout_item')}}" class="nav-link">Check Out</a></li>
         </ul>
         <ul class="nav ml-auto">
-            <li class="nav-item"><a href="{{url_for('index')}}" class="nav-link">Index</a></li>
+            <li class="nav-item"><a class="nav-link"href="{{url_for('auth.login')}}">Login</a></li>
+            <li class="nav-item"><a class="nav-link"href="{{url_for('admin.profile')}}">Profile</a></li>
         </ul>
     </nav>
     <br><br>
