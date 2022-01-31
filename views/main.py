@@ -14,6 +14,26 @@ def view_item(id):
     i = item.query.filter_by(id=id).first_or_404()
     return render_template("views/item.html", item=i)
 
+@main.route("/item/edit/<id>") # edit item
+@login_required
+def edit_item(id):
+    if(current_user.pos == "Producer"):
+        i = item.query.filter_by(id=id).first_or_404()
+        return render_template("views/edit/item.html", item=i)
+    else:
+        return redirect(url_for("index"))
+
+@main.route("/item/delete/<id>") # edit item
+@login_required
+def delete_item(id):
+    if(current_user.pos == "Producer"):
+        i = item.query.filter_by(id=id).first_or_404()
+        item.query.filter_by(id=id).delete()
+        db.session.commit()
+        return redirect(url_for("admin.profile"))
+    else:
+        return redirect(url_for("index"))
+
 @main.route("/students") # view all students
 def view_students():
     students = student.query.all()

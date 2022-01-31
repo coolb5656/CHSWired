@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ student.name }}</h1>
+    <h2>{{ student.pos }}</h2>
+    <p>{{ student.email }}</p>
+    {% if student.items %}
+        <h2>Checked Out: </h2>
+        <br>
+        {%for i in student.items%}
+        <div class="card">
+            {{i.name}}
+            <h5>{{i.status_date}} </h5>
+        </div>
+        <br>
+        {% endfor %} 
+    {%endif%}
+
+    <br><br>
+
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Status Date</th>
+            <th>Student</th>
+            <th><a href="#"><i class="fa fa-plus"></i> Add Items</a></th>
+            <th></th>
+        </tr>
+        {%for i in items%}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.type}}</td>
+            <td>{{i.status}}</td>
+            <td>{{i.status_date}}</td>
+            <td>{{i.student.name}}</td>
+            <td><div class="row"><a class="m-3" href="{{url_for('main.edit_item', id=i.id)}}">
+                <i class="fa fa-pencil"></i>
+                <p>Edit</p>
+            </a>
+            <a class="text-danger m-3"href="{{url_for('main.delete_item', id=i.id)}}">
+                <i class="fa fa-trash fa-xs"></i>
+                <p>Delete</p>
+            </a></div>
+            </td>
+        </tr>
+
+        {% endfor %} 
+    </table>
+{% endblock %}
