@@ -28,12 +28,7 @@ def add_reservation():
     students = student.query.all()
     items = item.query.all()
     return render_template("reserve/new.html", students=students, items=items)
-
-@reserve.route("change", methods=["GET", "POST"]) # change reservation
-def edit_reservation():
-    # TODO change reservation logic
-    pass
-
+    
 def check_reservation():
     with db.app.app_context():
         reservations = reservation.query.all()

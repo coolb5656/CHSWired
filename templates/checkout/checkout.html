@@ -2,6 +2,10 @@
 
 {% block content %}
 
+{% assets "scanjs" %}
+            <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
 <h1>{% block title %} check out item {% endblock %}</h1>
 
 <form id="form" method="post">

@@ -11,12 +11,13 @@ def create_app():
 
     bundles = {
         'js': Bundle(
-            'js/lib/jquery-3.6.0.min.js',
-            'js/scan.js',
+            'js/app.js',
             output='gen/app.js'),
+        'scanjs': Bundle(
+            'js/scan.js',
+            output='gen/scan.js'),
         'css': Bundle(
             'css/style.css',
-            'css/lib/bootstrap.css',
             output='gen/style.css'),
     }
 

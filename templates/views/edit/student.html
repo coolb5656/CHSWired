@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ student.name }}</h1>
+    <h2>{{ student.pos }}</h2>
+    <p>{{ student.email }}</p>
+    {% if student.items %}
+        <h2>Checked Out: </h2>
+        <br>
+        {%for i in student.items%}
+        <div class="card">
+            {{i.name}}
+            <h5>{{i.status_date}} </h5>
+        </div>
+        <br>
+        {% endfor %} 
+    {%endif%}
+{% endblock %}

@@ -9,5 +9,7 @@ admin = Blueprint('admin', __name__)
 def profile():
     if(current_user.pos == "Producer"):
         items=item.query.all()
-        return render_template("admin/profile.html", student=current_user, items=items)
+        students=student.query.all()
+        reservations=reservation.query.all()
+        return render_template("admin/profile.html", student=current_user, items=items, students=students, reservations=reservations)
     return redirect(url_for('main.view_student', id=current_user.id))
