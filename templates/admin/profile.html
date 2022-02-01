@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {% assets "adminjs" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
     <h1>{{ student.name }}</h1>
     <h2>{{ student.pos }}</h2>
     <p>{{ student.email }}</p>
@@ -18,7 +22,7 @@
 
     <br><br>
     <h1>Items</h1>
-    <table class="table">
+    <table class="table" id="item-table">
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -26,7 +30,7 @@
             <th>Status</th>
             <th>Status Date</th>
             <th>Student</th>
-            <th><a href="#"><i class="fa fa-plus"></i> Add Item</a></th>
+            <th><button class="btn btn-link p-0" onclick="addItem()"><i class="fa fa-plus"></i> Add Item</button></th>
             <th>
                 <a href="#">Import CSV</a>
 
