@@ -13,6 +13,9 @@ def create_app():
         'js': Bundle(
             'js/app.js',
             output='gen/app.js'),
+        'adminjs': Bundle(
+            'js/admin.js',
+            output='gen/scan.js'),
         'scanjs': Bundle(
             'js/scan.js',
             output='gen/scan.js'),

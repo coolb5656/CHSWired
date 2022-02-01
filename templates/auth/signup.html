@@ -2,15 +2,6 @@
 
 {% block content %}
 <div class="container">
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class="row justify-content-center">
-      <div class="notification is-danger">
-          {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
-      </div>
-    </div>
-  {% endif %}
-  {% endwith %}
   <div class="row justify-content-center">
   <form action="signup" method="post">
     <label for="email">Email</label><br>
