@@ -13,12 +13,19 @@ def login():
         email = request.form.get("email")
         password = request.form.get("pwd")
 
+        pos_allowed_login = ["Producer", "Teacher"]
+
         s = student.query.filter_by(email=email).first()
+
+        print(s.pos)
 
         if not s or not check_password_hash(s.pwd, password):
             flash("Wrong Email or Password!", "Error")
             return redirect(url_for("auth.login"))
-        
+        elif s.pos not in pos_allowed_login:
+            flash("You must be a Producer to access this page!", "Error")
+            return redirect(url_for("index"))
+
         login_user(s)
         return redirect(url_for('admin.profile'))
 
@@ -39,7 +46,7 @@ def signup():
             return redirect(url_for('auth.signup'))
 
         # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-        new_user = student(email=email, name=name, pos="Producer",pwd=generate_password_hash(password, method='sha256'))
+        new_user = student(email=email, name=name, pos="Teacher",pwd=generate_password_hash(password, method='sha256'))
 
         # add the new user to the database
         db.session.add(new_user)

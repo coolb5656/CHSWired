@@ -31,7 +31,7 @@
             <th>Status</th>
             <th>Status Date</th>
             <th>Student</th>
-            <th><button class="btn btn-link"  data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i>Add Item</button></th>
+            <th><button class="btn btn-link"  data-toggle="modal" data-target="#add_item_m"><i class="fa fa-plus"></i>Add Item</button></th>
             <th>
                 <a href="#">Import CSV</a>
 
@@ -45,12 +45,9 @@
             <td>{{i.status}}</td>
             <td>{{i.status_date}}</td>
             <td>{{i.student.name}}</td>
-            <td><a class="m-3" href="{{url_for('main.edit_item', id=i.id)}}">
-                <i class="fa fa-pencil"></i>
-                <p>Edit</p>
-            </a>
+            <td><button class="btn btn-link"  data-toggle="modal" data-target="#edit_item_m" onclick='addID( {{i.id}} )'><i class="fa fa-pencil"></i>Edit Item</button>
             </td><td>
-            <a class="text-danger m-3"href="{{url_for('main.delete_item', id=i.id)}}">
+            <a class="text-danger m-3"href="{{url_for('admin.delete_item', id=i.id)}}">
                 <i class="fa fa-trash fa-xs"></i>
                 <p>Delete</p>
             </a>
@@ -69,7 +66,7 @@
             <th>Name</th>
             <th>Position</th>
             <th>Email</th>
-            <th><a href="#"><i class="fa fa-plus"></i> Add Student</a></th>
+            <th><button class="btn btn-link"  data-toggle="modal" data-target="#add_student_m"><i class="fa fa-plus"></i>Add Student</button></th>
             <th>
                 <a href="#">Import CSV</a>
 
@@ -81,12 +78,12 @@
             <td>{{s.name}}</td>
             <td>{{s.pos}}</td>
             <td>{{s.email}}</td>
-            <td><a class="m-3" href="{{url_for('main.edit_student', id=s.id)}}">
+            <td><a class="m-3" href="{{url_for('admin.edit_student', id=s.id)}}">
                 <i class="fa fa-pencil"></i>
                 <p>Edit</p>
             </a>
             </td><td>
-            <a class="text-danger m-3"href="{{url_for('main.delete_student', id=s.id)}}">
+            <a class="text-danger m-3"href="{{url_for('admin.delete_student', id=s.id)}}">
                 <i class="fa fa-trash fa-xs"></i>
                 <p>Delete</p>
             </a>
@@ -127,8 +124,121 @@
         {% endfor %} 
     </table>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Add Item Modal -->
+    <div class="modal fade" id="add_item_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form" method="post" action="new_item">
+                        <label for="name">Item Name</label><br>
+                        <input type="text" name="name" id="name"><br><br>
+                        <label for="type">Item Type</label><br>
+                        <input type="text" name="type"><br><br>
+                        <label for="scan">Code</label><br>
+                        <input type = "button" name="scan" id="scan" value = "Scan" />
+                        <div style="width:0;"><input id="code" name=code></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="add_student_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Student</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form" method="post" action="new_student">
+                        <label for="email">Email</label><br>
+                        <input type="text" name="email" id="email"><br><br>
+                        <label for="name">Name</label><br>
+                        <input type="text" name="name" id="name"><br><br>
+                        <label for="type">Position</label><br>
+                        <input type="text" name="position" id="position"><br><br>
+                        <label for="pwd">Password</label><br>
+                        <input type="password" name="pwd" id="pwd" style="display: none;"><br><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="modal fade" id="edit_item_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit_item" method="post" action="{{url_for('admin.edit_item', id=1)}}">
+                        <label for="name">Item Name</label><br>
+                        <input type="text" name="name" id="name"><br><br>
+                        <label for="type">Item Type</label><br>
+                        <input type="text" name="type"><br><br>
+                        <label for="scan">Code</label><br>
+                        <input type = "button" name="scan" id="scan" value = "Scan" />
+                        <div style="width:0;"><input id="code" name=code></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div class="modal fade" id="edit_student_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form" method="post" action="new_item">
+                        <label for="name">Item Name</label><br>
+                        <input type="text" name="name" id="name"><br><br>
+                        <label for="type">Item Type</label><br>
+                        <input type="text" name="type"><br><br>
+                        <label for="scan">Code</label><br>
+                        <input type = "button" name="scan" id="scan" value = "Scan" />
+                        <div style="width:0;"><input id="code" name=code></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Edit Reservation Modal -->
+    <div class="modal fade" id="edit_res_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
