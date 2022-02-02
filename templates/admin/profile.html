@@ -5,6 +5,14 @@
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
 
+<<<<<<< HEAD
+=======
+
+    {% assets "adminjs" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+>>>>>>> 65f73e2e6738c89d3c85ceb6fa0dcefa751cb0a8
     <h1>{{ student.name }}</h1>
     <h2>{{ student.pos }}</h2>
     <p>{{ student.email }}</p>
@@ -22,7 +30,8 @@
 
     <br><br>
     <h1>Items</h1>
-    <table class="table" id="item-table">
+    <div id="item_section">
+    <table class="table" id="item_table">
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -30,7 +39,7 @@
             <th>Status</th>
             <th>Status Date</th>
             <th>Student</th>
-            <th><button class="btn btn-link p-0" onclick="addItem()"><i class="fa fa-plus"></i> Add Item</button></th>
+            <th><button class="btn btn-link"  data-toggle="modal" data-target="#exampleModal"><i class="fa fa-plus"></i>Add Item</button></th>
             <th>
                 <a href="#">Import CSV</a>
 
@@ -58,7 +67,8 @@
 
         {% endfor %} 
     </table>
-
+    </div>
+    
     <br><br>
     <h1>Students</h1>
     <table class="table">
@@ -124,4 +134,32 @@
 
         {% endfor %} 
     </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form" method="post" action="new_item">
+                        <label for="name">Item Name</label><br>
+                        <input type="text" name="name" id="name"><br><br>
+                        <label for="type">Item Type</label><br>
+                        <input type="text" name="type"><br><br>
+                        <label for="scan">Code</label><br>
+                        <input type = "button" name="scan" id="scan" value = "Scan" />
+                        <div style="width:0;"><input id="code" name=code></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </div>
 {% endblock %}

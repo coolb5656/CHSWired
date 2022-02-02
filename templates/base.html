@@ -39,6 +39,17 @@
             <li class="nav-item"><a href="{{url_for('main.view_students')}}" class="nav-link">Students</a></li>
             <li class="nav-item"><a href="{{url_for('checkout.checkin_item')}}" class="nav-link">Check In</a></li>
             <li class="nav-item"><a href="{{url_for('checkout.checkout_item')}}" class="nav-link">Check Out</a></li>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <li>
+                <div class="row justify-content-center">
+                <div class="notification is-danger">
+                    {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                </div>
+                </div>
+            </li>
+            {% endif %}
+            {% endwith %}
         </ul>
         <ul class="nav ml-auto">
             {%if current_user.is_authenticated %}

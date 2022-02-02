@@ -1,8 +1,6 @@
 $(document).ready(function(){
-    
+$("#scan").on("click", function (){
+    $("#code").focus();
+    $('#code').val('');
+});
 })
-
-
-function addItem() {
-    $('#item_table tr:last').after('<tr>...</tr><tr>...</tr>');
-}
