@@ -6,7 +6,7 @@
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
         </script>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     {% assets "js" %}
             <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
@@ -31,27 +31,36 @@
 <body>
 
     <!-- nav -->
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="{{url_for('index')}}" class="navbar-brand">CHS Wired</a>
-        <ul class="nav mr-auto">
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav nav mr-auto">
             <li class="nav-item"><a href="{{url_for('main.view_items')}}" class="nav-link">Items</a></li>
             <li class="nav-item"><a href="{{url_for('main.view_reservations')}}" class="nav-link">Reservations</a></li>
             <li class="nav-item"><a href="{{url_for('main.view_students')}}" class="nav-link">Students</a></li>
             <li class="nav-item"><a href="{{url_for('checkout.checkin_item')}}" class="nav-link">Check In</a></li>
             <li class="nav-item"><a href="{{url_for('checkout.checkout_item')}}" class="nav-link">Check Out</a></li>
+            
+        </ul>
+        <ul class="nav ml-auto">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             <li>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center ml-4 mr-4 mt-2">
                 <div class="notification is-danger">
-                    {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                    {{ messages[0] }}
                 </div>
                 </div>
             </li>
             {% endif %}
             {% endwith %}
-        </ul>
-        <ul class="nav ml-auto">
+
+
             {%if current_user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link"href="{{url_for('auth.logout')}}">Logout</a></li>
                 <li class="nav-item"><a class="nav-link"href="{{url_for('admin.profile')}}">{{current_user.name}}</a></li>
@@ -59,6 +68,7 @@
                 <li class="nav-item"><a class="nav-link"href="{{url_for('auth.login')}}">Login</a></li>
             {%endif%}
         </ul>
+    </div>
     </nav>
     <br><br>
     {% block content %}
