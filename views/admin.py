@@ -28,7 +28,7 @@ def checkin_item():
 
 
             if i: # if a user is found, we want to redirect back to signup page so user can try again
-                flash('item already exists!')
+                flash('item already exists!', "Error")
                 return redirect(url_for('main.view_item', id=i.id))
 
             new_item = item(name=name, type=item_type,code=code, status="In", status_date=datetime.now())

@@ -16,7 +16,7 @@ def login():
         s = student.query.filter_by(email=email).first()
 
         if not s or not check_password_hash(s.pwd, password):
-            flash("Wrong Email or Password!")
+            flash("Wrong Email or Password!", "Error")
             return redirect(url_for("auth.login"))
         
         login_user(s)
@@ -35,7 +35,7 @@ def signup():
         user = student.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
 
         if user: # if a user is found, we want to redirect back to signup page so user can try again
-            flash('Email address already exists!')
+            flash('Email address already exists!', "Error")
             return redirect(url_for('auth.signup'))
 
         # create a new user with the form data. Hash the password so the plaintext version isn't saved.
