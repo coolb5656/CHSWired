@@ -1,9 +1,10 @@
 from datetime import datetime
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, current_user
 from models.models import db,item, student, reservation, log
-
+import pandas as pd
+import os
 """
 ############ROUTES##########
 admin/ -  parent prefix
@@ -20,7 +21,7 @@ def profile():
     items=item.query.all()
     students=student.query.all()
     reservations=reservation.query.all()
-    return render_template("admin/profile.html", student=current_user, items=items, students=students, reservations=reservations)
+    return render_template("admin/profile.html.j2", student=current_user, items=items, students=students, reservations=reservations)
 
 @admin.route("new_item", methods=["GET","POST"]) # checkin items
 @login_required
@@ -30,7 +31,7 @@ def new_item():
         item_type = request.form.get('type')
         code = request.form.get('code')
 
-        i = item.query.filter_by(name=name).first() 
+        i = item.query.filter_by(code=code).first() 
 
 
         if i:
@@ -70,13 +71,14 @@ def new_student():
 @admin.route("/item/edit/<id>", methods=["GET","POST"]) # edit item
 @login_required
 def edit_item(id):
+    i = item.query.filter_by(id=id).first()
     if request.method == "POST":
         name = request.form.get('name')
         item_type = request.form.get('type')
         status = request.form.get('status')
         code = request.form.get('code')
 
-        i = item.query.filter_by(id=id).first()
+        print(status)
 
         if name:
             i.name=name
@@ -84,16 +86,22 @@ def edit_item(id):
             i.type=item_type
         if code:
             i.code = code
-        if i.status != status:
-            if i.status == "In":
-                i.student_id = None
-            i.status = status
+        if status and i.status == "In":
+            i.status = "Out For Maintenance"
             i.status_date = datetime.now()
+        elif i.status == "Out For Maintenance":
+            i.status = "In"
+            i.status_date = datetime.now()
+        else:
+            flash('Must check item in First!', "Error")
+
+
 
         db.session.commit()
+        return redirect(url_for("admin.profile"))
         
 
-    return redirect(url_for("admin.profile"))
+    return render_template("admin/edit_item.html", item=i)
 
 
 @admin.route("/item/delete/<id>") # delete item
@@ -127,4 +135,18 @@ def edit_reservation(id):
 def delete_reservation(id):
     reservation.query.filter_by(id=id).delete()
     db.session.commit()
+    return redirect(url_for("admin.profile"))
+
+######### IMPORTING ############
+@admin.route("item/import", methods=["GET", "POST"])
+def import_items():
+    if request.method == "POST":
+        uploaded_file = request.files['file']
+        if uploaded_file.filename != '':
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+            uploaded_file.save(file_path)
+
+            df = pd.DataFrame(pd.read_csv(file_path))
+            df.to_sql("item", db.engine, if_exists='replace', index = False)
+
     return redirect(url_for("admin.profile"))

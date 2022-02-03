@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ item.name }}</h1>
-    <h2>{{ item.type }}</h2>
-    <p>{{ item.status }}</p>
-    <p>{{ item.status_date }}</p>
-    {% if item.student %}
-        <h2>Checked Out By: {{item.student.name}}</h2>
-    {%endif%}
+<form id="edit_item" method="post" action="{{url_for('admin.edit_item', id=item.id)}}">
+    <label for="name">Item Name</label><br>
+    <input type="text" name="name" id="name" value="{{item.name}}"><br><br>
+    <label for="type">Item Type</label><br>
+    <input type="text" name="type"><br><br>
+    <label for="status">Item Status</label><br>
+    <input type="checkbox" name="status"> Out For Maintenance?<br><br>
+    <label for="scan">Code</label><br>
+    <input type = "button" name="scan" id="scan" value = "Scan" />
+    <div style="width:0;overflow:hidden;"><input id="code" name=code></div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
 {% endblock %}

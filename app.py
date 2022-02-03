@@ -6,6 +6,12 @@ from flask_login import LoginManager
 def create_app():
     app = Flask(__name__)
 
+    app.config["DEBUG"] = True
+
+    # Upload folder
+    UPLOAD_FOLDER = 'static/upload'
+    app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
+
     ####### ASSETS ########
     assets = Environment(app)
 
@@ -29,7 +35,7 @@ def create_app():
 
     ############# CONFIG #############
     app.config['SECRET_KEY'] = 'dev'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://wbbajeubxwdijf:42d9230539d6322698cb30380c5542d6549909ba71664a7dbb6f064923c0ff79@ec2-3-212-143-188.compute-1.amazonaws.com:5432/ddnpsj9vqfmh7u'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     ######### DB #################
