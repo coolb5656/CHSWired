@@ -1,0 +1,56 @@
+{% extends "producer/dashboard.html" %}
+
+{% block main %}
+{% assets "adminjs" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
+
+
+<h1>{{ student.name }}</h1>
+<h2>{{ student.pos }}</h2>
+<p>{{ student.email }}</p>
+{% if student.items %}
+<h2>Checked Out: </h2>
+<br>
+{%for i in student.items%}
+<div class="card">
+    {{i.name}}
+    <h5>{{i.status_date}} </h5>
+</div>
+<br>
+{% endfor %}
+{%endif%}
+<br><br>
+<h1>Reservations</h1>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Item</th>
+        <th>Date</th>
+        <th></th>
+    </tr>
+    {%for r in reservations%}
+    <tr>
+        <td>{{r.id}}</td>
+        <td>{{r.student.name}}</td>
+        <td>{{r.item.name}}</td>
+        <td>{{r.date_out}}</td>
+        <td><a class="m-3" href="{{url_for('admin.edit_reservation', id=r.id)}}">
+                <i class="fa fa-pencil"></i>
+                <p>Edit</p>
+            </a>
+        </td>
+        <td>
+            <a class="text-danger m-3" href="{{url_for('admin.delete_reservation', id=r.id)}}">
+                <i class="fa fa-trash fa-xs"></i>
+                <p>Delete</p>
+            </a>
+        </td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+{% endblock %}
