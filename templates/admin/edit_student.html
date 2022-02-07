@@ -1,18 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ student.name }}</h1>
-    <h2>{{ student.pos }}</h2>
-    <p>{{ student.email }}</p>
-    {% if student.items %}
-        <h2>Checked Out: </h2>
-        <br>
-        {%for i in student.items%}
-        <div class="card">
-            {{i.name}}
-            <h5>{{i.status_date}} </h5>
-        </div>
-        <br>
-        {% endfor %} 
-    {%endif%}
+<form id="edit_student" method="post" action="{{url_for('admin.edit_student', id=student.id)}}">
+    <label for="name">Student Name</label><br>
+    <input type="text" name="name" id="name" value="{{student.name}}"><br><br>
+    <label for="type">Student Email</label><br>
+    <input type="text" name="email" value="{{student.email}}"><br><br>
+    <label for="type">Student Position</label><br>
+    <input type="text" name="pos" value="{{student.pos}}"><br><br>
+
+    <button type="submit" class="btn btn-primary">Edit</button>
+</form>
 {% endblock %}

@@ -18,10 +18,11 @@ admin = Blueprint('admin', __name__)
 @admin.route("/profile")
 @login_required
 def profile():
-    items=item.query.all()
-    students=student.query.all()
+    items=item.query.order_by(item.name.asc())
+    students=student.query.order_by(student.pos.asc())
     reservations=reservation.query.all()
     return render_template("admin/profile.html.j2", student=current_user, items=items, students=students, reservations=reservations)
+
 
 @admin.route("new_item", methods=["GET","POST"]) # checkin items
 @login_required
@@ -78,8 +79,6 @@ def edit_item(id):
         status = request.form.get('status')
         code = request.form.get('code')
 
-        print(status)
-
         if name:
             i.name=name
         if item_type:
@@ -95,11 +94,9 @@ def edit_item(id):
         else:
             flash('Must check item in First!', "Error")
 
-
-
         db.session.commit()
         return redirect(url_for("admin.profile"))
-        
+
 
     return render_template("admin/edit_item.html", item=i)
 
@@ -111,11 +108,27 @@ def delete_item(id):
     db.session.commit()
     return redirect(url_for("admin.profile"))
 
-@admin.route("/student/edit/<id>") # edit student
+@admin.route("/student/edit/<id>", methods=["GET","POST"]) # edit student
 @login_required
 def edit_student(id):
-    s = student.query.filter_by(id=id).first_or_404()
-    return render_template("views/edit/student.html", student=s)
+    s = student.query.filter_by(id=id).first()
+    if request.method == "POST":
+        name = request.form.get('name')
+        email = request.form.get('type')
+        pos = request.form.get('status')
+
+        if name:
+            s.name=name
+        if email:
+            s.email=email
+        if pos:
+            s.pos = pos
+
+        db.session.commit()
+        return redirect(url_for("admin.profile"))
+
+
+    return render_template("admin/edit_student.html", student=s)
 
 @admin.route("/student/delete/<id>") # delete student
 @login_required

@@ -5,12 +5,16 @@
     <label for="name">Item Name</label><br>
     <input type="text" name="name" id="name" value="{{item.name}}"><br><br>
     <label for="type">Item Type</label><br>
-    <input type="text" name="type"><br><br>
+    <input type="text" name="type" value="{{item.type}}"><br><br>
     <label for="status">Item Status</label><br>
-    <input type="checkbox" name="status"> Out For Maintenance?<br><br>
+    {% if item.status == 'Out For Maintenance' %}
+        <input type="checkbox" name="status" value = '0' checked=true> Out For Maintenance?<br><br>
+    {% else %}
+        <input type="checkbox" name="status" value = '0'> Out For Maintenance?<br><br>
+    {% endif %}
     <label for="scan">Code</label><br>
     <input type = "button" name="scan" id="scan" value = "Scan" />
     <div style="width:0;overflow:hidden;"><input id="code" name=code></div>
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-primary">Edit</button>
 </form>
 {% endblock %}

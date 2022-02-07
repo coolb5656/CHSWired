@@ -1,9 +1,11 @@
-{% extends "base.html" %}
+{% extends "producer/dashboard.html" %}
 
-{% block content %}
+{% block main %}
     {% assets "adminjs" %}
     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
     {% endassets %}
+
+    
     
     <h1>{{ student.name }}</h1>
     <h2>{{ student.pos }}</h2>
