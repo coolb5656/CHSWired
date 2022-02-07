@@ -43,7 +43,6 @@ def create_app():
     from models.models import db,student
     db.init_app(app)
 
-
     ############ LOGIN ##############
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
@@ -75,4 +74,5 @@ def create_app():
     from views.main import main
     app.register_blueprint(main)
 
+    db.app=app
     return app

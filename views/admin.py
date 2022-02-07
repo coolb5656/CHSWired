@@ -23,6 +23,23 @@ def profile():
     reservations=reservation.query.all()
     return render_template("admin/profile.html.j2", student=current_user, items=items, students=students, reservations=reservations)
 
+@admin.route("/items")
+@login_required
+def admin_items():
+    items=item.query.order_by(item.name.asc())
+    return render_template("admin/items.html", student=current_user, items=items)
+
+@admin.route("/students")
+@login_required
+def admin_students():
+    students=student.query.order_by(student.pos.asc())
+    return render_template("admin/students.html", student=current_user, students=students)
+
+@admin.route("/reservations")
+@login_required
+def admin_reservations():
+    reservations=reservation.query.all()
+    return render_template("admin/reservations.html", student=current_user, reservations=reservations)
 
 @admin.route("new_item", methods=["GET","POST"]) # checkin items
 @login_required
@@ -44,7 +61,7 @@ def new_item():
         db.session.add(new_item)
         db.session.commit()
 
-        return redirect(url_for("admin.profile"))
+        return redirect(url_for("admin.admin_items"))
 
 @admin.route("new_student", methods=["GET","POST"]) # checkin items
 @login_required
@@ -60,13 +77,13 @@ def new_student():
 
         if user:
             flash('student already exists!', "Error")
-            return redirect(url_for('admin.profile'))
+            return redirect(url_for('admin.admin_students'))
 
         new_user = student(email=email, name=name, pos=pos,pwd=generate_password_hash(password, method='sha256'))
 
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for("admin.profile"))
+        return redirect(url_for("admin.admin_students"))
 
 ############# EDITING / DELETING ############
 @admin.route("/item/edit/<id>", methods=["GET","POST"]) # edit item
@@ -95,7 +112,7 @@ def edit_item(id):
             flash('Must check item in First!', "Error")
 
         db.session.commit()
-        return redirect(url_for("admin.profile"))
+        return redirect(url_for("admin.admin_items"))
 
 
     return render_template("admin/edit_item.html", item=i)
@@ -106,7 +123,7 @@ def edit_item(id):
 def delete_item(id):
     item.query.filter_by(id=id).delete()
     db.session.commit()
-    return redirect(url_for("admin.profile"))
+    return redirect(url_for("admin.admin_items"))
 
 @admin.route("/student/edit/<id>", methods=["GET","POST"]) # edit student
 @login_required
@@ -125,7 +142,7 @@ def edit_student(id):
             s.pos = pos
 
         db.session.commit()
-        return redirect(url_for("admin.profile"))
+        return redirect(url_for("admin.admin_students"))
 
 
     return render_template("admin/edit_student.html", student=s)
@@ -135,7 +152,7 @@ def edit_student(id):
 def delete_student(id):
     student.query.filter_by(id=id).delete()
     db.session.commit()
-    return redirect(url_for("admin.profile"))
+    return redirect(url_for("admin.admin_students"))
 
 @admin.route("/reservation/edit/<id>") # edit reservation
 @login_required
@@ -148,7 +165,7 @@ def edit_reservation(id):
 def delete_reservation(id):
     reservation.query.filter_by(id=id).delete()
     db.session.commit()
-    return redirect(url_for("admin.profile"))
+    return redirect(url_for("admin.admin_reservations"))
 
 ######### IMPORTING ############
 @admin.route("item/import", methods=["GET", "POST"])
@@ -162,4 +179,4 @@ def import_items():
             df = pd.DataFrame(pd.read_csv(file_path))
             df.to_sql("item", db.engine, if_exists='replace', index = False)
 
-    return redirect(url_for("admin.profile"))
+    return redirect(url_for("admin.admin_items"))

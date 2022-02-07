@@ -17,7 +17,6 @@ def login():
 
         s = student.query.filter_by(email=email).first()
 
-        print(s.pos)
 
         if not s or not check_password_hash(s.pwd, password):
             flash("Wrong Email or Password!", "Error")
