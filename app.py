@@ -1,12 +1,19 @@
 from flask import Flask, render_template
 from flask_assets import Environment, Bundle
 from flask_login import LoginManager
-
+import os
 
 def create_app():
     app = Flask(__name__)
 
-    app.config["DEBUG"] = True
+
+    is_prod = os.environ.get('IS_HEROKU', None)
+
+    if is_prod:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://wbbajeubxwdijf:42d9230539d6322698cb30380c5542d6549909ba71664a7dbb6f064923c0ff79@ec2-3-212-143-188.compute-1.amazonaws.com:5432/ddnpsj9vqfmh7u'
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+        app.config["DEBUG"] = True
 
     # Upload folder
     UPLOAD_FOLDER = 'static/upload'
@@ -35,7 +42,6 @@ def create_app():
 
     ############# CONFIG #############
     app.config['SECRET_KEY'] = 'dev'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://wbbajeubxwdijf:42d9230539d6322698cb30380c5542d6549909ba71664a7dbb6f064923c0ff79@ec2-3-212-143-188.compute-1.amazonaws.com:5432/ddnpsj9vqfmh7u'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     ######### DB #################
