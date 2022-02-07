@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto px-0">
+            <div id="sidebar" class="collapse collapse-horizontal sticky-top">
+                <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start min-vh-100">
+                    <a href="{{url_for('admin.admin_students')}}" class="list-group-item border-end-0 d-inline-block text-truncate"
+                        data-bs-parent="#sidebar"><i class="fa fa-school"></i> <span> Students</span> </a>
+                    <a href="{{url_for('admin.admin_items')}}" class="list-group-item border-end-0 d-inline-block text-truncate"
+                        data-bs-parent="#sidebar"><i class="fa fa-box"></i> <span> Items</span></a>
+                    <a href="{{url_for('admin.admin_reservations')}}" class="list-group-item border-end-0 d-inline-block text-truncate"
+                        data-bs-parent="#sidebar"><i class="fa fa-book"></i> <span> Reservations</span></a>
+                </div>
+            </div>
+        </div>
+
+
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+                <div class="sticky-top">
+                    <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse" class="btn"><i
+                            class="fa fa-angle-right fa-2x"></i></a>
+                </div>
+            {% block main %}
+            {% endblock %}
+        </main>
+    </div>
+</div>
+{% endblock %}

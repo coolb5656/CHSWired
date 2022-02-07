@@ -1,0 +1,80 @@
+{% extends "producer/dashboard.html" %}
+
+{% block main %}
+    {% assets "adminjs" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+    
+    
+    <h1>{{ student.name }}</h1>
+    <h2>{{ student.pos }}</h2>
+    <p>{{ student.email }}</p>
+    {% if student.items %}
+        <h2>Checked Out: </h2>
+        <br>
+        {%for i in student.items%}
+        <div class="card">
+            {{i.name}}
+            <h5>{{i.status_date}} </h5>
+        </div>
+        <br>
+        {% endfor %} 
+    {%endif%}
+    <br><br>
+    
+
+    <br><br>
+    
+
+    <!-- Add Item Modal -->
+    <div class="modal fade" id="add_item_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form" method="post" action="new_item">
+                        <label for="name">Item Name</label><br>
+                        <input type="text" name="name" id="name"><br><br>
+                        <label for="type">Item Type</label><br>
+                        <input type="text" name="type"><br><br>
+                        <label for="scan">Code</label><br>
+                        <input type = "button" name="scan" id="scan" value = "Scan" />
+                        <div style="width:0;overflow:hidden;"><input id="code" name=code></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Import Item Modal -->
+    <div class="modal fade" id="import_item_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Import Items</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form id="form" method="post" action="item/import" enctype="multipart/form-data">
+                        <label for="file">Import a file:</label>
+                        <input type="file" id="file" name="file" accept=".csv">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
