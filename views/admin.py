@@ -131,7 +131,7 @@ def edit_student(id):
     s = student.query.filter_by(id=id).first()
     if request.method == "POST":
         name = request.form.get('name')
-        email = request.form.get('type')
+        email = request.form.get('email')
         pos = request.form.get('status')
 
         if name:
