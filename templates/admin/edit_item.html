@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% assets "scanjs" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
+
 <form id="edit_item" method="post" action="{{url_for('admin.edit_item', id=item.id)}}">
     <label for="name">Item Name</label><br>
     <input type="text" name="name" id="name" value="{{item.name}}"><br><br>
@@ -14,7 +19,7 @@
     {% endif %}
     <label for="scan">Code</label><br>
     <input type = "button" name="scan" id="scan" value = "Scan" />
-    <div style="width:0;overflow:hidden;"><input id="code" name=code></div>
+    <div style="width:0;"><input id="code" name=code></div>
     <button type="submit" class="btn btn-primary">Edit</button>
 </form>
 {% endblock %}

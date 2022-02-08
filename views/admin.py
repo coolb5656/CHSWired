@@ -115,7 +115,12 @@ def edit_item(id):
         elif i.status != "In" and status:
             flash('Must check item in first!', "Error")
 
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            flash('Edit conflicts with other items!', "Error")
+
+
         return redirect(url_for("admin.admin_items"))
 
 
