@@ -79,24 +79,22 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
+    <div class="position-fixed top-0 end-0 p-3">
     {%for c,m in messages%}
-    <div style="position: absolute; top: 50; left: 0;">
         <div style="position: relative;">
-            <div class="toast" data-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast" data-bs-autohide="false" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
-                    <strong class="mr-auto">{{c}}</strong>
-                    <button type="button" class="ml-2 mb-1 close" data-bs-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <strong class="me-auto">{{c}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
                     {{m}}
                 </div>
             </div>
         </div>
+        
+        {%endfor%}
     </div>
-
-    {%endfor%}
     {% endif %}
     {% endwith %}
     {% block content %}

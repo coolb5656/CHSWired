@@ -1,10 +1,14 @@
 from datetime import datetime
-from flask import Blueprint, render_template, redirect, url_for, request, flash, current_app
+from operator import index
+from sqlite3 import IntegrityError
+from flask import Blueprint, render_template, redirect, url_for, request, flash, current_app, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required, current_user
 from models.models import db,item, student, reservation, log
 import pandas as pd
 import os
+from sqlalchemy.exc import IntegrityError
+
 """
 ############ROUTES##########
 admin/ -  parent prefix
@@ -108,8 +112,8 @@ def edit_item(id):
         elif i.status == "Out For Maintenance":
             i.status = "In"
             i.status_date = datetime.now()
-        else:
-            flash('Must check item in First!', "Error")
+        elif i.status != "In" and status:
+            flash('Must check item in first!', "Error")
 
         db.session.commit()
         return redirect(url_for("admin.admin_items"))
@@ -169,6 +173,7 @@ def delete_reservation(id):
 
 ######### IMPORTING ############
 @admin.route("item/import", methods=["GET", "POST"])
+@login_required
 def import_items():
     if request.method == "POST":
         uploaded_file = request.files['file']
@@ -177,6 +182,23 @@ def import_items():
             uploaded_file.save(file_path)
 
             df = pd.DataFrame(pd.read_csv(file_path))
-            df.to_sql("item", db.engine, if_exists='replace', index = False)
+            try:
+                df.to_sql("item", db.engine, if_exists='append', index = False)
+            except IntegrityError:
+                flash("Codes already in database!", "Error")
 
     return redirect(url_for("admin.admin_items"))
+
+######### EXPORTING ############
+@admin.route("item/export")
+@login_required
+def export_items():
+    df = pd.read_sql(item.query.statement, db.engine).drop("id", axis=1)
+
+    csv = df.to_csv(index=False)  
+    response = make_response(csv)
+    cd = 'attachment; filename=item.csv'
+    response.headers['Content-Disposition'] = cd 
+    response.mimetype='text/csv'
+
+    return response
