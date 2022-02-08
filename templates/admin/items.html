@@ -27,7 +27,7 @@
     <div id="item_section">
     <table class="table" id="item_table">
         <tr>
-            <th>ID</th>
+            <th>Code</th>
             <th>Name</th>
             <th>Type</th>
             <th>Status</th>
@@ -42,7 +42,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <button class="btn btn-link"  data-bs-toggle="modal" data-bs-target="#add_item_m"><i class="fa fa-plus"></i>Add Item</button>
                     <button class="btn btn-link"  data-bs-toggle="modal" data-bs-target="#import_item_m"><i class="fa fa-file"></i> Import CSV</button>
-                      <a class="dropdown-item" href="{{url_for('admin.export_items')}}">Export CSV</a>
+                      <a class="btn btn-link" href="{{url_for('admin.export_items')}}">Export CSV</a>
                     </div>
                   </div>
 
@@ -50,11 +50,11 @@
         </tr>
         {%for i in items%}
         <tr>
-            <td>{{i.id}}</td>
+            <td>{{i.code}}</td>
             <td>{{i.name}}</td>
             <td>{{i.type}}</td>
             <td>{{i.status}}</td>
-            <td>{{i.status_date}}</td>
+            <td>{{i.status_date.day}}</td>
             <td>{{i.student.name}}</td>
             <td><a href="{{url_for('admin.edit_item', id=i.id)}}"><i class="fa fa-pencil"></i> Edit</a>
             </td><td>

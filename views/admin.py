@@ -199,7 +199,6 @@ def import_items():
 @login_required
 def export_items():
     df = pd.read_sql(item.query.statement, db.engine).drop("id", axis=1)
-
     csv = df.to_csv(index=False)  
     response = make_response(csv)
     cd = 'attachment; filename=item.csv'
