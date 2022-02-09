@@ -174,7 +174,7 @@ def edit_reservation(id):
 def delete_reservation(id):
     reservation.query.filter_by(id=id).delete()
     db.session.commit()
-    return redirect(url_for("admin.admin_reservations"))
+    return redirect(url_for("admin.admin_reservations"))\
 
 ######### IMPORTING ############
 @admin.route("item/import", methods=["GET", "POST"])

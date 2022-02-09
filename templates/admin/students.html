@@ -1,4 +1,4 @@
-{% extends "producer/dashboard.html" %}
+{% extends "admin/dashboard.html" %}
 
 {% block main %}
 {% assets "adminjs" %}
@@ -30,10 +30,18 @@
         <th>Name</th>
         <th>Position</th>
         <th>Email</th>
-        <th><button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#add_student_m"><i class="fa fa-plus"></i>Add
-                Student</button></th>
+        <th></th>
         <th>
-            <a href="#">Import CSV</a>
+            <div class="dropdown">
+                <button class="btn" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <button class="btn btn-link"  data-bs-toggle="modal" data-bs-target="#add_student_m"><i class="fa fa-plus"></i>Add Student</button>
+                <button class="btn btn-link"  data-bs-toggle="modal" data-bs-target="#import_student_m"><i class="fa fa-file"></i> Import CSV</button>
+                  <a class="btn btn-link" href="{{url_for('admin.export_students')}}">Export CSV</a>
+                </div>
+              </div>
 
         </th>
     </tr>
@@ -79,6 +87,29 @@
                     <input type="text" name="position" id="position"><br><br>
                     <label for="pwd">Password</label><br>
                     <input type="password" name="pwd" id="pwd" style="display: none;"><br><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Import Student Modal -->
+<div class="modal fade" id="import_student_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Import Students</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form id="form" method="post" action="student/import" enctype="multipart/form-data">
+                    <label for="file">Import a file:</label><br>
+                    <input type="file" id="file" name="file" accept=".csv">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Add</button>
