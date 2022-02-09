@@ -32,6 +32,9 @@ def create_app():
         'scanjs': Bundle(
             'js/scan.js',
             output='gen/scan.js'),
+        'reservejs': Bundle(
+            'js/reserve.js',
+            output='gen/reserve.js'),
         'css': Bundle(
             'css/style.css',
             output='gen/style.css'),

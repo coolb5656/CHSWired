@@ -54,9 +54,9 @@
             <td>{{i.name}}</td>
             <td>{{i.type}}</td>
             <td>{{i.status}}</td>
-            <td>{{i.status_date.day}}</td>
+            <td>{{i.status_date.strftime('%Y-%m-%d')}}</td>
             <td>{{i.student.name}}</td>
-            <td><a href="{{url_for('admin.edit_item', id=i.id)}}"><i class="fa fa-pencil"></i> Edit</a>
+            <td><a href="{{url_for('admin.edit_item', id=i.id)}}"><i class="fa fa-pencil"></i><br> Edit</a>
             </td><td>
             <a class="text-danger m-3"href="{{url_for('admin.delete_item', id=i.id)}}">
                 <i class="fa fa-trash fa-xs"></i>

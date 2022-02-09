@@ -15,11 +15,12 @@ def add_reservation():
         ids = ids.split(",")
 
         s = student.query.filter_by(name=name).first()
-
-        for id in ids:
-            new_reservation = reservation(student_id=s.id, item_id=id, date_out=date)
-            db.session.add(new_reservation)
-            db.session.commit()
+        
+        if ids:
+            for id in ids:
+                new_reservation = reservation(student_id=s.id, item_id=id, date_out=date)
+                db.session.add(new_reservation)
+                db.session.commit()
 
         check_reservation()
 
