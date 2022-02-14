@@ -18,8 +18,14 @@
       </select>
       <br>
       <br>
-      <label for="date">Date: </label><br>
-      <input type="date" value="2022-01-01" name="date" id="date"><br><br>
+
+      <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker">
+        <input placeholder="Select date" type="text" id="example" class="form-control">
+        <label for="example">Try me...</label>
+        <i class="fas fa-calendar input-prefix" tabindex=0></i>
+      </div>
+
+
       <select id="select_items" name="select_items">
         <option value="{{items[0].id}}" selected>{{items[0].name}}</option>
         {% for item in items[1:] %}
@@ -28,7 +34,7 @@
       </select><br>
       <input type="button" onclick="addItem()" value="Add"><br><br>
       <div style="width:0;overflow: hidden;"><input type="text" id="ids" name=ids></div>
-      <div id="items"></div>
+      <p id="items"></p>
       <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>

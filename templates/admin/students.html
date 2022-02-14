@@ -24,9 +24,8 @@
 
 <br><br>
 <h1>Students</h1>
-<table class="table">
-    <tr>
-        <th>ID</th>
+<table class="table table-striped">
+    <thead>
         <th>Name</th>
         <th>Position</th>
         <th>Email</th>
@@ -44,10 +43,9 @@
               </div>
 
         </th>
-    </tr>
+    </thead>
     {%for s in students%}
     <tr>
-        <td>{{s.id}}</td>
         <td>{{s.name}}</td>
         <td>{{s.pos}}</td>
         <td>{{s.email}}</td>

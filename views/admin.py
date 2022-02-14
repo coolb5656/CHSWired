@@ -166,8 +166,23 @@ def delete_student(id):
 @admin.route("/reservation/edit/<id>") # edit reservation
 @login_required
 def edit_reservation(id):
-    r = reservation.query.filter_by(id=id).first_or_404()
-    return render_template("views/edit/reservation.html", reservation=r)
+    s = student.query.filter_by(id=id).first()
+    if request.method == "POST":
+        name = request.form.get("name", type=str)
+        date = request.form.get("date", type=str)
+        date = datetime.fromisoformat(date)
+
+        
+
+        if name:
+            s.name=name
+        
+
+        db.session.commit()
+        return redirect(url_for("admin.admin_students"))
+
+    return render_template("admin/edit_student.html", student=s)
+
 
 @admin.route("/reservation/delete/<id>") # delete reservation
 @login_required
@@ -183,7 +198,7 @@ def import_items():
     if request.method == "POST":
         uploaded_file = request.files['file']
         if uploaded_file.filename != '':
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], "item.csv")
             uploaded_file.save(file_path)
 
             df = pd.DataFrame(pd.read_csv(file_path))
@@ -194,6 +209,23 @@ def import_items():
 
     return redirect(url_for("admin.admin_items"))
 
+@admin.route("student/import", methods=["GET", "POST"])
+@login_required
+def import_students():
+    if request.method == "POST":
+        uploaded_file = request.files['file']
+        if uploaded_file.filename != '':
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], "student.csv")
+            uploaded_file.save(file_path)
+
+            df = pd.DataFrame(pd.read_csv(file_path))
+            try:
+                df.to_sql("student", db.engine, if_exists='append', index = False)
+            except IntegrityError:
+                flash("Students already in database!", "Error")
+
+    return redirect(url_for("admin.admin_students"))
+
 ######### EXPORTING ############
 @admin.route("item/export")
 @login_required
@@ -202,6 +234,18 @@ def export_items():
     csv = df.to_csv(index=False)  
     response = make_response(csv)
     cd = 'attachment; filename=item.csv'
+    response.headers['Content-Disposition'] = cd 
+    response.mimetype='text/csv'
+
+    return response
+
+@admin.route("student/export")
+@login_required
+def export_students():
+    df = pd.read_sql(student.query.statement, db.engine).drop("id", axis=1)
+    csv = df.to_csv(index=False)  
+    response = make_response(csv)
+    cd = 'attachment; filename=student.csv'
     response.headers['Content-Disposition'] = cd 
     response.mimetype='text/csv'
 

@@ -17,12 +17,15 @@ def add_reservation():
         s = student.query.filter_by(name=name).first()
         
         if ids:
+            ids = list(set(ids))
             for id in ids:
-                new_reservation = reservation(student_id=s.id, item_id=id, date_out=date)
-                db.session.add(new_reservation)
-                db.session.commit()
-
-        check_reservation()
+                if not is_reserverd(id, date):
+                    new_reservation = reservation(student_id=s.id, item_id=id, date_out=date)
+                    db.session.add(new_reservation)
+                    db.session.commit()
+                else:
+                    flash("Item already reserved!", "Error")
+                    return redirect(url_for("index"))
 
         return redirect(url_for("index"))
 
@@ -30,19 +33,12 @@ def add_reservation():
     items = item.query.all()
     return render_template("reserve/new.html", students=students, items=items)
     
-def check_reservation():
+def is_reserverd(i, date):
     with db.app.app_context():
-        reservations = reservation.query.all()
-
-        for r in reservations:
-            if r.date_out.date() == datetime.now().date:
-                i = item.query.filter_by(id=r.item_id).first()
-                i.status="Reserved"
-                i.student_id = r.student_id
-                i.status_date = datetime.now()
-                reservation.query.filter_by(id=r.id).delete()
-                db.session.commit()
-                print("Updating Reservation")
+        r = reservation.query.filter_by(id=i).first()
+        if r:
+            print(str(date.date())+ "=="+ str(r.date_out.date()))
+            return r.date_out.date() == date.date()
 
 @reserve.route("check_new_reservation", methods=["GET"]) # backend reservation
 def check_new_reservation():

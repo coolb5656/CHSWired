@@ -25,8 +25,8 @@
     <br><br>
     <h1>Items</h1>
     <div id="item_section">
-    <table class="table" id="item_table">
-        <tr>
+    <table class="table table-striped" id="item_table">
+        <thead>
             <th>Code</th>
             <th>Name</th>
             <th>Type</th>
@@ -47,7 +47,7 @@
                   </div>
 
             </th>   
-        </tr>
+        </thead>
         {%for i in items%}
         <tr>
             <td>{{i.code}}</td>

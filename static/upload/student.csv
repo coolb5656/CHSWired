@@ -1,0 +1,3 @@
+email,name,pos,pwd
+student1@gmail.com,Student,Student,sha256$4Qa37nhIyBGyqwHH$581f4815e54bc001d73ac8910cb76d2460e07595eb435387f5128f2580597537
+prod2@gmail.com,Producer 2,Producer,sha256$5vc0P3beipfxQ6Qb$059d52d57310d82d61bca3085123e7e9960db3643e0bc67d36449332139efa7a
