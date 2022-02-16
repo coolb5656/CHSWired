@@ -42,7 +42,7 @@ def admin_students():
 @admin.route("/reservations")
 @login_required
 def admin_reservations():
-    reservations=reservation.query.all()
+    reservations=reservation.query.order_by(reservation.date_out.asc())
     return render_template("admin/reservations.html", student=current_user, reservations=reservations)
 
 @admin.route("new_item", methods=["GET","POST"]) # checkin items

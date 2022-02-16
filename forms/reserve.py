@@ -1,10 +1,12 @@
 from datetime import datetime
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request, flash
-from models.models import db,item, reservation, student
+from sqlalchemy import and_
+from models.models import db, item, reservation, student
 
 reserve = Blueprint('reserve', __name__)
 
-@reserve.route("add", methods=["GET", "POST"]) # reserve items
+
+@reserve.route("add", methods=["GET", "POST"])  # reserve items
 def add_reservation():
     if request.method == "POST":
         name = request.form.get("name", type=str)
@@ -15,32 +17,39 @@ def add_reservation():
         ids = ids.split(",")
 
         s = student.query.filter_by(name=name).first()
-        
+
+        new_reservations = []
         if ids:
             ids = list(set(ids))
             for id in ids:
-                if not is_reserverd(id, date):
-                    new_reservation = reservation(student_id=s.id, item_id=id, date_out=date)
-                    db.session.add(new_reservation)
-                    db.session.commit()
+                if not is_reserved(id, date):
+                    new_reservations.append(reservation(
+                        student_id=s.id, item_id=id, date_out=date))
                 else:
-                    flash("Item already reserved!", "Error")
+                    i = item.query.filter_by(id=id).first()
+                    flash(i.name + " already reserved!", "Error")
                     return redirect(url_for("index"))
+
+            for r in new_reservations:
+                db.session.add(r)
+            db.session.commit()
 
         return redirect(url_for("index"))
 
     students = student.query.all()
     items = item.query.all()
     return render_template("reserve/new.html", students=students, items=items)
-    
-def is_reserverd(i, date):
-    with db.app.app_context():
-        r = reservation.query.filter_by(id=i).first()
-        if r:
-            print(str(date.date())+ "=="+ str(r.date_out.date()))
-            return r.date_out.date() == date.date()
 
-@reserve.route("check_new_reservation", methods=["GET"]) # backend reservation
+
+def is_reserved(i, date):
+    print(i)
+    with db.app.app_context():
+        reservations = db.session.query(reservation).filter(
+            and_(reservation.date_out == date, reservation.item_id==i)).first()
+        if reservations:
+            return True
+
+@reserve.route("check_new_reservation", methods=["GET"])  # backend reservation
 def check_new_reservation():
     with db.app.app_context():
         date = request.args.get("date", type=str)
@@ -54,5 +63,5 @@ def check_new_reservation():
             if day.day == date.day:
                 i = item.query.filter_by(id=r.item_id).first()
                 items.append(i.id)
-        
+
         return jsonify(items)

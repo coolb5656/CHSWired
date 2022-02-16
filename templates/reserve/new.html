@@ -4,7 +4,7 @@
 {% assets "reservejs" %}
 <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
-
+<script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/js/datepicker-full.min.js"></script>
 
 <h1>{% block title %} Make New Reservation {% endblock %}</h1>
 <div class="container">
@@ -19,11 +19,7 @@
       <br>
       <br>
 
-      <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker">
-        <input placeholder="Select date" type="text" id="example" class="form-control">
-        <label for="example">Try me...</label>
-        <i class="fas fa-calendar input-prefix" tabindex=0></i>
-      </div>
+      <input type="date" name="date" id="date"><br><br>
 
 
       <select id="select_items" name="select_items">
