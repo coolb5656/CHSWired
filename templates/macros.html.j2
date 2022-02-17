@@ -1,0 +1,37 @@
+{% macro input(name, label, value='', type='text', id="") -%}
+    <label for="{{name}}">{{label}}</label>
+    <input type="{{ type }}" value="{{ value|e }}" name="{{ name }}" {%if id%} id="{{id}}" {%endif%}>
+{%- endmacro %}
+
+{% macro file_input(name, label, value='', accept="") -%}
+    <label for="{{name}}">{{label}}</label>
+    <input type="file" value="{{ value|e }}" name="{{ name }}" accept="{{accept}}">
+{%- endmacro %}
+
+{% macro card(title, href="")-%}
+<div class="card">
+  <div class="card-body">
+    <a href="{{ href }}" class="card-link h1 text-decoration-none">{{title}} </a>
+    <p class="card-text">{{ caller() }}</p>
+  </div>
+</div>
+{%- endmacro%}
+
+
+{% macro modal(id, title)-%}
+<div class="modal fade" id="{{id}}" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">{{title}}</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                {{caller()}}
+            </div>
+        </div>
+        </div>
+    </div>
+{%- endmacro%}

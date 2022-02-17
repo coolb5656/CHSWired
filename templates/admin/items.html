@@ -1,4 +1,5 @@
 {% extends "admin/dashboard.html" %}
+{% import 'macros.html.j2' as m %}
 
 {% block main %}
     {% assets "adminjs" %}
@@ -24,7 +25,6 @@
 
     <br><br>
     <h1>Items</h1>
-    <div id="item_section">
     <table class="table table-striped" id="item_table">
         <thead>
             <th>Code</th>
@@ -67,56 +67,28 @@
 
         {% endfor %} 
     </table>
-    </div>
 
     <!-- Add Item Modal -->
-    <div class="modal fade" id="add_item_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <form id="form" method="post" action="new_item">
-                        <label for="name">Item Name</label><br>
-                        <input type="text" name="name" id="name"><br><br>
-                        <label for="type">Item Type</label><br>
-                        <input type="text" name="type"><br><br>
-                        <label for="scan">Code</label><br>
-                        <input type = "button" name="scan" id="scan" value = "Scan" />
-                        <div style="width:0;overflow:hidden;"><input id="code" name=code></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </form>
-            </div>
-        </div>
-        </div>
+    {% call m.modal("add_item_m", "Add New Item") %}
+    <form id="form" method="post" action="new_item">
+        {{m.input("name", "Item Name")}}<br><br>
+        {{m.input("type", "Item Type")}} <br><br>
+        {{m.input("scan", "Code", type="button",value="Scan")}} <br>
+        <div style="width:0;overflow:hidden;"><input id="code" name=code></div>
     </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+    {% endcall %}
+
 
     <!-- Import Item Modal -->
-    <div class="modal fade" id="import_item_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Import Items</h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body">
-                <form id="form" method="post" action="item/import" enctype="multipart/form-data">
-                        <label for="file">Import a file:</label><br>
-                        <input type="file" id="file" name="file" accept=".csv">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                    </form>
-            </div>
-        </div>
-        </div>
+    {% call m.modal("import_item_m", "Import New Items") %}
+    <form id="form" method="post" action="item/import" enctype="multipart/form-data">
+        {{m.file_input("file","Select File: ", accept=".csv")}}
     </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Import</button>
+    </form>
+    {% endcall %}
 {% endblock %}

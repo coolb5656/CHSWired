@@ -7,7 +7,7 @@ $("#scan").on("click", function (){
 
 $("#position").change(function addpwd() {
     if ($("#position").val() == "Producer") {
-        $("#pwd").css( "display", "block" );
+        $("#password_field").css( "display", "block" );
     }
 });
 

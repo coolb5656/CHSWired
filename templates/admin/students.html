@@ -1,4 +1,5 @@
 {% extends "admin/dashboard.html" %}
+{% import 'macros.html.j2' as m %}
 
 {% block main %}
 {% assets "adminjs" %}
@@ -66,55 +67,29 @@
 </table>
 
 <!-- Add Student Modal -->
-<div class="modal fade" id="add_student_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Student</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-            <form id="form" method="post" action="new_student">
-                    <label for="email">Email</label><br>
-                    <input type="text" name="email" id="email"><br><br>
-                    <label for="name">Name</label><br>
-                    <input type="text" name="name" id="name"><br><br>
-                    <label for="type">Position</label><br>
-                    <input type="text" name="position" id="position"><br><br>
-                    <label for="pwd">Password</label><br>
-                    <input type="password" name="pwd" id="pwd" style="display: none;"><br><br>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
-        </div>
-    </div>
-    </div>
+{% call m.modal("add_student_m", "Add New Student") %}
+<form id="form" method="post" action="new_student">
+    {{m.input("email", "Student Email")}}<br><br>
+    {{m.input("name", "Student Name")}} <br><br>
+    {{m.input("position", "Student Position", id="position")}} <br><br>
+    <div style="display: none;" id="password_field">{{m.input("pwd", "Password", type="password")}} <br><br></div>
 </div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+{% endcall %}
+
 
 <!-- Import Student Modal -->
-<div class="modal fade" id="import_student_m" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Import Students</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-            <form id="form" method="post" action="student/import" enctype="multipart/form-data">
-                    <label for="file">Import a file:</label><br>
-                    <input type="file" id="file" name="file" accept=".csv">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
-        </div>
-    </div>
-    </div>
+{% call m.modal("import_student_m", "Import New Students") %}
+<form id="form" method="post" action="student/import" enctype="multipart/form-data">
+    {{m.file_input("file","Select File: ", accept=".csv")}}
 </div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary">Import</button>
+</form>
+{% endcall %}
+
+
 
 {% endblock %}

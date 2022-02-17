@@ -1,8 +1,8 @@
 from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from models.models import db,student,item
+from models.models import db,student,item,log
 from flask import jsonify
-
+from sqlalchemy import and_
 
 checkout = Blueprint('checkout', __name__)
 
@@ -35,9 +35,12 @@ def checkin_item():
 
         for id in ids:
             i = item.query.filter_by(id=id).first()                
+            new_log = log(student_id=i.student_id, item_id=id, date_out = i.status_date, date_in=datetime.now())
             i.status="In"
             i.status_date = datetime.now()
             i.student_id = None
+
+            db.session.add(new_log)
             db.session.commit()
 
         return redirect(url_for("index"))

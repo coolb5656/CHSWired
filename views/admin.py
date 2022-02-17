@@ -1,25 +1,16 @@
 from datetime import datetime
-from operator import index
 from sqlite3 import IntegrityError
 from flask import Blueprint, render_template, redirect, url_for, request, flash, current_app, make_response
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from flask_login import login_required, current_user
 from models.models import db,item, student, reservation, log
 import pandas as pd
 import os
 from sqlalchemy.exc import IntegrityError
 
-"""
-############ROUTES##########
-admin/ -  parent prefix
-
-profile/ - profile for producers and students
-new_item/ - backend for adding items
-
-"""
 admin = Blueprint('admin', __name__)
 
-@admin.route("/profile")
+@admin.route("/profile") # view dashboard
 @login_required
 def profile():
     items=item.query.order_by(item.name.asc())
@@ -27,25 +18,25 @@ def profile():
     reservations=reservation.query.all()
     return render_template("admin/profile.html.j2", student=current_user, items=items, students=students, reservations=reservations)
 
-@admin.route("/items")
+@admin.route("/items") # view items table
 @login_required
 def admin_items():
     items=item.query.order_by(item.name.asc())
     return render_template("admin/items.html", student=current_user, items=items)
 
-@admin.route("/students")
+@admin.route("/students") # view students table
 @login_required
 def admin_students():
     students=student.query.order_by(student.pos.asc())
     return render_template("admin/students.html", student=current_user, students=students)
 
-@admin.route("/reservations")
+@admin.route("/reservations") # view reservations table
 @login_required
 def admin_reservations():
     reservations=reservation.query.order_by(reservation.date_out.asc())
     return render_template("admin/reservations.html", student=current_user, reservations=reservations)
 
-@admin.route("new_item", methods=["GET","POST"]) # checkin items
+@admin.route("new_item", methods=["GET","POST"]) # new item
 @login_required
 def new_item():
     if request.method == "POST":
@@ -54,7 +45,6 @@ def new_item():
         code = request.form.get('code')
 
         i = item.query.filter_by(code=code).first() 
-
 
         if i:
             flash('item already exists!', "Error")
@@ -67,7 +57,7 @@ def new_item():
 
         return redirect(url_for("admin.admin_items"))
 
-@admin.route("new_student", methods=["GET","POST"]) # checkin items
+@admin.route("new_student", methods=["GET","POST"]) # new student
 @login_required
 def new_student():
     if request.method == "POST":

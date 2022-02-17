@@ -36,10 +36,7 @@
         <td>{{r.student.name}}</td>
         <td>{{r.item.name}}</td>
         <td>{{r.date_out}}</td>
-        <td><a class="m-3" href="{{url_for('admin.edit_reservation', id=r.id)}}">
-                <i class="fa fa-pencil"></i>
-                <p>Edit</p>
-            </a>
+        <td>
         </td>
         <td>
             <a class="text-danger m-3" href="{{url_for('admin.delete_reservation', id=r.id)}}">
