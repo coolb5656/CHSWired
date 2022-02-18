@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import Blueprint, jsonify, render_template, redirect, url_for, request, flash
 from sqlalchemy import and_
-from models.models import db, item, reservation, student
+from src.models.models import db, item, reservation, student
 
 reserve = Blueprint('reserve', __name__)
 

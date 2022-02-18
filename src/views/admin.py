@@ -3,7 +3,7 @@ from sqlite3 import IntegrityError
 from flask import Blueprint, render_template, redirect, url_for, request, flash, current_app, make_response
 from werkzeug.security import generate_password_hash
 from flask_login import login_required, current_user
-from models.models import db,item, student, reservation, log
+from src.models.models import db,item, student, reservation, log
 import pandas as pd
 import os
 from sqlalchemy.exc import IntegrityError
